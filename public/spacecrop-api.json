@@ -1,0 +1,161 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "SpaceCrop API",
+    "version": "0.1.0",
+    "description": "\n# Introduction\nSpaceCrop API helps you calculate the normalized soil moisture index (nsmi) of a given area. \n"
+  },
+  "paths": {
+    "/spacecrop/nmsi": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Areas",
+                "type": "array",
+                "items": {
+                  "type": "object"
+                },
+                "example": [
+                  {
+                    "GR": [
+                      [
+                        22.619367509458364,
+                        40.54658590484328
+                      ],
+                      [
+                        22.620848088834585,
+                        40.54755605755804
+                      ],
+                      [
+                        22.619764476392568,
+                        40.548501739114954
+                      ],
+                      [
+                        22.61824098167211,
+                        40.54749899014031
+                      ],
+                      [
+                        22.619367509458364,
+                        40.54658590484328
+                      ]
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "example": "OK"
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/spacecrop/results": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "nmsi": 0.019928222991087884,
+                    "area_code": "GR"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/spacecrop": {
+      "get": {
+        "summary": "Root",
+        "operationId": "root",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "SpaceCrop API"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "title": "HTTPValidationError",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "ValidationError": {
+        "title": "ValidationError",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "loc": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            }
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
